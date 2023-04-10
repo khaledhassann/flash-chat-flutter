@@ -15,6 +15,8 @@ class RegistrationScreen extends StatefulWidget {
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
   final _auth = FirebaseAuth.instance;
+  String passErrorText;
+  String emailErrorText;
   bool emailFail = false;
   bool passFail = false;
   bool showSpinner = false;
@@ -64,7 +66,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     },
                     decoration: kTextFieldDecoration.copyWith(
                       hintText: 'Enter your email',
-                      errorText: emailFail? 'Enter a correct email' : null,
+                      errorText: emailErrorText,
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.blueAccent, width: 1.0),
                         borderRadius: BorderRadius.all(Radius.circular(32.0)),
@@ -87,7 +89,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     },
                     decoration: kTextFieldDecoration.copyWith(
                       hintText: 'Enter your password',
-                      errorText: passFail ? 'Password must be at least 6 characters' : null,
+                      errorText: passErrorText,
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.blueAccent, width: 1.0),
                         borderRadius: BorderRadius.all(Radius.circular(32.0)),
@@ -119,11 +121,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         }
                       } catch(e){
                         setState(() {
-                          if (e == 'firebase_auth/weak-password'){
-                            passFail = true;
+                          if (e.code == 'weak-password'){
+                            passErrorText = 'Password must be at least 6 characters';
+                          } else {
+                            passErrorText = null;
                           }
-                          if(e == 'firebase_auth/invalid-email'){
-                            emailFail = true;
+                          if(e.code == 'invalid-email'){
+                            emailErrorText = 'Invalid email';
+                          } else if(e.code == 'email-already-in-use'){
+                            emailErrorText = 'Email already in use';
+                          } else {
+                            emailErrorText = null;
                           }
                           showSpinner = false;
                         });
