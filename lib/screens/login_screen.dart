@@ -27,80 +27,78 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: Colors.white,
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.0),
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Hero(
-                    tag: 'logo',
-                    child: Container(
-                      height: 200.0,
-                      child: Image.asset('images/logo.png'),
-                    ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Flexible(
+                child: Hero(
+                  tag: 'logo',
+                  child: Container(
+                    height: 200.0,
+                    child: Image.asset('images/logo.png'),
                   ),
-                  SizedBox(
-                    height: 48.0,
-                  ),
-                  TextField(
-                    keyboardType: TextInputType.emailAddress,
-                    onChanged: (value) {
-                      //Do something with the user input.
-                      email = value;
-                    },
-                    decoration: kTextFieldDecoration.copyWith(
-                      hintText: 'Enter your email',
-                      errorText:
-                          loginFail ? "Email or password is incorrect" : null,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 8.0,
-                  ),
-                  TextField(
-                    obscureText: true,
-                    onChanged: (value) {
-                      //Do something with the user input.
-                      password = value;
-                    },
-                    decoration: kTextFieldDecoration.copyWith(
-                      hintText: 'Enter your password',
-                      errorText: loginFail? "Email or password is incorrect" : null,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 24.0,
-                  ),
-                  RoundedButton(
-                    onPressed: () async {
-                      setState(() {
-                        showSpinner = true;
-                      });
-                      try {
-                        final user = await _auth.signInWithEmailAndPassword(
-                            email: email, password: password);
-                        setState(() {
-                          showSpinner = false;
-                        });
-                        if (user != null) {
-                          loginFail = false;
-                          Navigator.pushNamed(context, ChatScreen.id);
-                        }
-                      } on FirebaseAuthException catch (e) {
-                        setState(() {
-                          showSpinner = false;
-                          loginFail = true;
-                        });
-                        print(e);
-                      }
-                    },
-                    title: 'Log In',
-                    color: Colors.lightBlueAccent,
-                  )
-                ],
+                ),
               ),
-            ),
+              SizedBox(
+                height: 48.0,
+              ),
+              TextField(
+                keyboardType: TextInputType.emailAddress,
+                onChanged: (value) {
+                  //Do something with the user input.
+                  email = value;
+                },
+                decoration: kTextFieldDecoration.copyWith(
+                  hintText: 'Enter your email',
+                  errorText:
+                      loginFail ? "Email or password is incorrect" : null,
+                ),
+              ),
+              SizedBox(
+                height: 8.0,
+              ),
+              TextField(
+                obscureText: true,
+                onChanged: (value) {
+                  //Do something with the user input.
+                  password = value;
+                },
+                decoration: kTextFieldDecoration.copyWith(
+                  hintText: 'Enter your password',
+                  errorText: loginFail? "Email or password is incorrect" : null,
+                ),
+              ),
+              SizedBox(
+                height: 24.0,
+              ),
+              RoundedButton(
+                onPressed: () async {
+                  setState(() {
+                    showSpinner = true;
+                  });
+                  try {
+                    final user = await _auth.signInWithEmailAndPassword(
+                        email: email, password: password);
+                    setState(() {
+                      showSpinner = false;
+                    });
+                    if (user != null) {
+                      loginFail = false;
+                      Navigator.pushNamed(context, ChatScreen.id);
+                    }
+                  } on FirebaseAuthException catch (e) {
+                    setState(() {
+                      showSpinner = false;
+                      loginFail = true;
+                    });
+                    print(e);
+                  }
+                },
+                title: 'Log In',
+                color: Colors.lightBlueAccent,
+              )
+            ],
           ),
         ),
       ),
