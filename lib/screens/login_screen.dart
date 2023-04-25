@@ -18,6 +18,8 @@ class _LoginScreenState extends State<LoginScreen> {
   bool showSpinner = false;
   String email;
   String password;
+  final emailFieldController = TextEditingController();
+  final passFieldController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 48.0,
               ),
               TextField(
+                controller: emailFieldController,
                 keyboardType: TextInputType.emailAddress,
                 onChanged: (value) {
                   //Do something with the user input.
@@ -59,6 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 8.0,
               ),
               TextField(
+                controller: passFieldController,
                 obscureText: true,
                 onChanged: (value) {
                   //Do something with the user input.
@@ -87,6 +91,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       loginFail = false;
                       Navigator.pushNamed(context, ChatScreen.id);
                     }
+                    emailFieldController.clear();
+                    passFieldController.clear();
                   } on FirebaseAuthException catch (e) {
                     setState(() {
                       showSpinner = false;

@@ -15,6 +15,8 @@ class RegistrationScreen extends StatefulWidget {
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
   final _auth = FirebaseAuth.instance;
+  final emailFieldController = TextEditingController();
+  final passFieldController = TextEditingController();
   String passErrorText;
   String emailErrorText;
   bool emailFail = false;
@@ -59,6 +61,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ),
               // EMAIL TEXT FIELD
               TextField(
+                controller: emailFieldController,
                 keyboardType: TextInputType.emailAddress,
                 onChanged: (value) {
                   //Do something with the user input.
@@ -82,6 +85,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ),
               // PASSWORD TEXT FIELD
               TextField(
+                controller: passFieldController,
                 obscureText: true,
                 onChanged: (value) {
                   //Do something with the user input.
@@ -119,6 +123,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       passFail = false;
                       Navigator.pushNamed(context, ChatScreen.id);
                     }
+                    emailFieldController.clear();
+                    passFieldController.clear();
                   } catch(e){
                     setState(() {
                       if (e.code == 'weak-password'){
